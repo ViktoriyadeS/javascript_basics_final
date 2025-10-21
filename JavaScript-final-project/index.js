@@ -92,28 +92,30 @@ myUserProfile.max_age_interest = maxAge;
 console.log("Done creating user profile:");
 console.log(myUserProfile);
 console.log("Start matching...")
-const matchUsers = (data, user) => {
-    let count = 0;
-    let matched = [];
-    const numMatchedProfiles = data.forEach((item) => { 
-        if(item.age >= user.min_age_interest && item.age <= user.max_age_interest){
-            //check if user age is in range
-            if(user.age >= item.min_age_interest && user.age <= item.max_age_interest){
-                //check gender
-                if(user.gender_interest === item.gender){
-                    if(item.gender_interest === user.gender){
-                        if(user.location === item.location){
-                            count += 1;
-                            matched.push({ first_name: item.first_name, last_name: item.last_name, age: item.age , location: item.location})
-                        }
-                    }
-                }
-            }
-        }
-    })
-    console.log(`Found ${count} matches`);
-    console.log(matched)
-};
+let count = 0;
+let matched = [];
 
-matchUsers(mockData,myUserProfile)
+for (let i = 0; i < mockData.length; i++) {
+  const item = mockData[i];
 
+  if (
+    item.age >= myUserProfile.min_age_interest &&
+    item.age <= myUserProfile.max_age_interest &&
+    myUserProfile.age >= item.min_age_interest &&
+    myUserProfile.age <= item.max_age_interest &&
+    myUserProfile.gender_interest === item.gender &&
+    item.gender_interest === myUserProfile.gender &&
+    myUserProfile.location === item.location
+  ) {
+    count++;
+    matched.push({
+      first_name: item.first_name,
+      last_name: item.last_name,
+      age: item.age,
+      location: item.location
+    });
+  }
+}
+
+console.log(`Found ${count} match(es)`);
+console.log(matched);
